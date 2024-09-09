@@ -1,0 +1,48 @@
+module fetch_tb();
+    logic clk, reset, PCSrc_F;
+    logic [63:0] PCBranch_F, imem_addr_F;
+    logic [63:0] expected_imem_addr_F;
+
+    always begin
+        clk = 1; #5; clk = 0; #5;
+    end
+
+    fetch dut (PCSrc_F,clk,reset,PCBranch_F,imem_addr_F);
+
+    initial begin
+        reset = 1;
+        PCSrc_F = 0;
+        PCBranch_F = 64'd0;
+
+        #50;
+        reset = 0;
+
+        PCBranch_F = 64'd10;
+        PCSrc_F = 0;
+        expected_imem_addr_F = 64'd4;
+        #10;
+        check_results(expected_imem_addr_F);
+
+        PCBranch_F = 64'd20;
+        PCSrc_F = 1;
+        expected_imem_addr_F = 64'd20;
+		   #10; 
+        check_results(expected_imem_addr_F);
+
+        PCBranch_F = 64'd20;
+        PCSrc_F = 0;
+        expected_imem_addr_F = 64'd24;
+        #10;  
+		  check_results(expected_imem_addr_F);        
+        #50;
+        $stop;
+    end
+    function void check_results(input [63:0] expected);
+        if (imem_addr_F !== expected) begin
+            $display("Error: imem_addr_F = %d (expected %d)", imem_addr_F, expected);
+        end else begin
+            $display("Success: imem_addr_F = %d", imem_addr_F);
+        end
+    endfunction
+
+endmodule
