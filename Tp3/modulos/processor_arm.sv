@@ -16,6 +16,7 @@ module processor_arm #(parameter N = 64)
 	logic [3:0] EStatus;
 	logic [N-1:0] DM_readData, IM_address; //DM_addr, DM_writeData
 	logic DM_readEnable; //DM_writeEnable
+	logic Uncondbranch; // Para instruccion de branch
 
 	controller  	c  (.reset(reset),
 						.instr(q[31:21]),
@@ -32,7 +33,8 @@ module processor_arm #(parameter N = 64)
 						.Exc(Exc),
 						.ERet(ERet),
 						.EStatus(EStatus),
-						.ExtIAck(ExtIAck));
+						.ExtIAck(ExtIAck),
+						.Uncondbranch(Uncondbranch));
 
 
 	datapath #(64)  dp (.reset(reset),
@@ -55,7 +57,8 @@ module processor_arm #(parameter N = 64)
 						.Exc(Exc),
 						.ERet(ERet),
 						.EStatus(EStatus),
-						.ExcAck(ExcAck));
+						.ExcAck(ExcAck),
+						.Uncondbranch(Uncondbranch));
 
 
 	imem	instrMem   (.addr(IM_address[8:2]),

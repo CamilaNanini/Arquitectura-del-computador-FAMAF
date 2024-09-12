@@ -13,7 +13,7 @@ module datapath #(parameter N = 64)
 				  input logic [31:0] IM_readData,
 				  input logic [N-1:0] DM_readData,
 				  input logic [3:0] EStatus,
-				  input logic Exc, ERet,
+				  input logic Exc, ERet,Uncondbranch,  //--------------
 				  output logic [N-1:0] IM_addr, DM_addr, DM_writeData,
 				  output logic DM_writeEnable, DM_readEnable,
 				  output logic ExcAck);
@@ -24,7 +24,7 @@ module datapath #(parameter N = 64)
 	logic [N-1:0] NextPC, EVAddr;
 	logic EProc;
 	logic zero;
-
+	logic controlBranchs; //--------------
 
 	fetch #(64) 	FETCH      (.PCSrc_F(PCSrc),
 								.clk(clk),
@@ -63,9 +63,13 @@ module datapath #(parameter N = 64)
 	memory  		MEMORY     (.Branch_M(Branch),
 								.zero_M(zero),
 								.PCSrc_M(PCSrc));
-
-
-
+								
+	mux2 #(64) BRANCH (.d0(PCSrc|Uncondbranch),  //--------------------------
+							.d1(ERet),
+							.s(ERet),
+							.y(controlBranchs)
+	);
+	
 	writeback #(64) WRITEBACK  (.aluResult_W(DM_addr),
 								.DM_readData_W(DM_readData),
 								.memtoReg(memtoReg),
@@ -73,7 +77,7 @@ module datapath #(parameter N = 64)
 	
 
 	exception       EXCEPTION  (.clk(clk), .reset(reset),
-								.Exc(Exc), .ERet(ERet),
+								.Exc(Exc), .ERet(controlBranchs),  //-----------------------
 								.EStatus(EStatus),
 								.NextPC_X(NextPC),
 								.imem_addr_X(IM_addr),
@@ -87,5 +91,5 @@ module datapath #(parameter N = 64)
 	// Salida de señales de control:
 	assign DM_writeEnable = memWrite;
 	assign DM_readEnable = memRead;
-
+	
 endmodule

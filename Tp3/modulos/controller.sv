@@ -6,7 +6,7 @@ module controller(input logic [10:0] instr,
 						output logic reg2loc, regWrite,
 						output logic [1:0] AluSrc,
 						output logic Branch, memtoReg, memRead, memWrite,
-						output logic ERet,Exc,ExtIAck,
+						output logic ERet,Exc,ExtIAck,Uncondbranch, //--------------
 						output logic [3:0] EStatus
 						);
 											
@@ -27,7 +27,8 @@ module controller(input logic [10:0] instr,
 							.ERet(ERet),
 							.EStatus(EStatus),
 							.Exc(Exc),
-							.ExtIAck(ExtIAck)
+							.ExtIAck(ExtIAck),
+							.Uncondbranch (Uncondbranch) //--------------
 							);	
 
 								
