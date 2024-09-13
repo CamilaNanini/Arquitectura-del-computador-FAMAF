@@ -19,23 +19,25 @@ module datapath #(parameter N = 64)
 				  output logic ExcAck);
 
 	logic PCSrc;
-	logic [N-1:0] E_Branch, PCBranch, writeData3;
+	logic [N-1:0] E_Branch, PCBranch, writeData3,PCBranch2;
 	logic [N-1:0] signImm, readData1, readData2, readData3;
 	logic [N-1:0] NextPC, EVAddr;
 	logic EProc;
 	logic zero;
-	logic controlBranchs; //--------------
 
 	fetch #(64) 	FETCH      (.PCSrc_F(PCSrc),
 								.clk(clk),
 								.reset(reset),
 								.EProc_F(EProc),
-								.PCBranch_F(PCBranch),
+								.PCBranch_F(PCBranch2),
 								.EVAddr_F(EVAddr),
 								.imem_addr_F(IM_addr),
 								.NextPC_F(NextPC));
-
-
+								
+mux2 #(64) BRANCHREGISTER(.d0(PCBranch),
+									.d1(PCBranch+readData2),
+									.s(Uncondbranch),
+									.y(PCBranch2));
 
 	decode #(64)	DECODE     (.regWrite_D(regWrite),
 								.reg2loc_D(reg2loc),
@@ -63,12 +65,6 @@ module datapath #(parameter N = 64)
 	memory  		MEMORY     (.Branch_M(Branch),
 								.zero_M(zero),
 								.PCSrc_M(PCSrc));
-								
-	mux2 #(64) BRANCH (.d0(PCSrc|Uncondbranch),  //--------------------------
-							.d1(ERet),
-							.s(ERet),
-							.y(controlBranchs)
-	);
 	
 	writeback #(64) WRITEBACK  (.aluResult_W(DM_addr),
 								.DM_readData_W(DM_readData),
@@ -77,7 +73,7 @@ module datapath #(parameter N = 64)
 	
 
 	exception       EXCEPTION  (.clk(clk), .reset(reset),
-								.Exc(Exc), .ERet(controlBranchs),  //-----------------------
+								.Exc(Exc), .ERet(ERet),
 								.EStatus(EStatus),
 								.NextPC_X(NextPC),
 								.imem_addr_X(IM_addr),

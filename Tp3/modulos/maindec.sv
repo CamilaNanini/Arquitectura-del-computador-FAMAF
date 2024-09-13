@@ -45,7 +45,7 @@ always_comb begin
 				//--------------------------NUEVAS INSTRUCCIONES--------------------------------
 				11'b11010110100 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_0_0_0_1_01_1_0000_0_0; //ERET
 				11'b11010101001 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b1_10_0_1_0_0_0_01_0_0000_0_0; //MRS
-				11'b11010110000 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_0_0_0_0_10_0_0000_0_0; //CB  --> Revisar
+				11'b11010110000 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b1_00_0_0_0_0_0_10_0_0000_0_0; //BR
 				default : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_0_0_0_1_01_1_0010_0_1;
 			endcase
 			Exc = ExtIRQ | NotAnInstr;
