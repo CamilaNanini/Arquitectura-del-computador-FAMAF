@@ -33,16 +33,16 @@ always_comb begin
 			NotAnInstr = 1'b0;
 		end
 		else 
-		begin
+		begin	
 			casez(Op)
-				11'b11111000010 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_1_0_0_0_10_0_0000_0_0; //LDUR
+				11'b11111000010 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_01_1_1_1_0_0_00_0_0000_0_0; //LDUR
 				11'b11111000000 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b1_01_0_0_0_1_0_00_0_0000_0_0; //STUR
 				11'b10110100??? : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b1_00_0_0_0_0_1_01_0_0000_0_0; //CBZ
 				11'b10001011000 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_1_0_0_0_10_0_0000_0_0; //ADD
 				11'b11001011000 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_1_0_0_0_10_0_0000_0_0; //SUB
 				11'b10001010000 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_1_0_0_0_10_0_0000_0_0; //AND
 				11'b10101010000 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_1_0_0_0_10_0_0000_0_0; //ORR
-				//--------------------------NUEVAS INSTRUCCIONES--------------------------------
+				//--------------------------NUEVAS INSTRUCCIONES--------------------------------																							 
 				11'b11010110100 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b0_00_0_0_0_0_1_01_1_0000_0_0; //ERET
 				11'b11010101001 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b1_10_0_1_0_0_0_01_0_0000_0_0; //MRS
 				11'b11010110000 : {Reg2Loc, ALUSrc[1:0], MemtoReg, RegWrite, MemRead, MemWrite, Branch, ALUOp[1:0],ERet,EStatus[3:0],Uncondbranch,NotAnInstr} = 16'b1_00_0_0_0_0_0_10_0_0000_0_0; //BR
